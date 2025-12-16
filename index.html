@@ -71,28 +71,19 @@ h2{
   font-size:18px;
   font-weight:bold;
   color:#000;
+  cursor:move;
+  user-select:none;
 }
 
-#dateField{
-  top:45px;
-  right:80px;
-}
-
-#nameField{
-  top:140px;
-  right:180px;
-}
-
-#amountField{
-  top:180px;
-  right:180px;
-}
-
+/* قيم مبدئية */
+#dateField{ top:45px; right:80px; }
+#nameField{ top:135px; right:160px; }
+#amountField{ top:175px; right:160px; }
 #amountWordsField{
-  top:220px;
-  right:180px;
+  top:215px;
+  right:160px;
   font-size:14px;
-  width:420px;
+  width:430px;
 }
 </style>
 </head>
@@ -108,19 +99,19 @@ h2{
     <input type="date" id="date" oninput="updateCheque()">
 
     <label>اسم المستفيد</label>
-    <input type="text" id="name" placeholder="اكتب اسم المستفيد" oninput="updateCheque()">
+    <input type="text" id="name" oninput="updateCheque()">
 
     <label>المبلغ رقماً</label>
-    <input type="number" id="amount" placeholder="مثال: 275969.74" oninput="updateCheque()">
+    <input type="number" id="amount" oninput="updateCheque()">
 
     <label>المبلغ كتابة</label>
-    <input type="text" id="amountWords" placeholder="اكتب المبلغ كتابة" oninput="updateCheque()">
+    <input type="text" id="amountWords" oninput="updateCheque()">
 
-    <button onclick="window.print()">🖨️ طباعة الشيك</button>
+    <button onclick="window.print()">🖨️ طباعة</button>
   </div>
 
-  <div class="cheque-box">
-    <img src="cheque-cib.png" alt="Cheque Template">
+  <div class="cheque-box" id="cheque">
+    <img src="cheque-cib.png">
 
     <div id="dateField" class="text-field"></div>
     <div id="nameField" class="text-field"></div>
@@ -132,18 +123,47 @@ h2{
 
 <script>
 function updateCheque(){
-  document.getElementById("dateField").textContent =
-    document.getElementById("date").value;
-
-  document.getElementById("nameField").textContent =
-    document.getElementById("name").value;
-
-  document.getElementById("amountField").textContent =
-    document.getElementById("amount").value;
-
-  document.getElementById("amountWordsField").textContent =
-    document.getElementById("amountWords").value;
+  dateField.textContent = date.value;
+  nameField.textContent = name.value;
+  amountField.textContent = amount.value;
+  amountWordsField.textContent = amountWords.value;
 }
+
+/* DRAG & DROP */
+let selected = null;
+let offsetX = 0;
+let offsetY = 0;
+
+document.querySelectorAll('.text-field').forEach(el => {
+
+  el.addEventListener('mousedown', function(e){
+    selected = this;
+    offsetX = e.offsetX;
+    offsetY = e.offsetY;
+    this.style.border = '1px dashed red';
+  });
+
+});
+
+document.addEventListener('mousemove', function(e){
+  if(!selected) return;
+
+  const parent = document.getElementById('cheque');
+  const rect = parent.getBoundingClientRect();
+
+  let x = e.clientX - rect.left - offsetX;
+  let y = e.clientY - rect.top - offsetY;
+
+  selected.style.left = x + 'px';
+  selected.style.top = y + 'px';
+});
+
+document.addEventListener('mouseup', function(){
+  if(selected){
+    selected.style.border = 'none';
+  }
+  selected = null;
+});
 </script>
 
 </body>
