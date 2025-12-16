@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>طباعة شيك CIB</title>
+
+<style>
+body{
+  font-family: Tahoma, Arial;
+  background:#f2f2f2;
+  padding:20px;
+}
+
+h2{
+  text-align:center;
+}
+
+.container{
+  display:flex;
+  gap:30px;
+  justify-content:center;
+  flex-wrap:wrap;
+}
+
+.form-box{
+  background:#fff;
+  padding:20px;
+  width:300px;
+  border-radius:8px;
+  box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+.form-box label{
+  display:block;
+  margin-top:10px;
+  font-size:14px;
+}
+
+.form-box input{
+  width:100%;
+  padding:8px;
+  margin-top:5px;
+}
+
+.form-box button{
+  width:100%;
+  margin-top:15px;
+  padding:10px;
+  background:#007bff;
+  color:#fff;
+  border:none;
+  border-radius:5px;
+  cursor:pointer;
+  font-size:16px;
+}
+
+.cheque-box{
+  position:relative;
+  width:650px;
+  background:#fff;
+  padding:10px;
+  border-radius:8px;
+}
+
+.cheque-box img{
+  width:100%;
+}
+
+.text-field{
+  position:absolute;
+  font-size:18px;
+  font-weight:bold;
+  color:#000;
+}
+
+#dateField{
+  top:45px;
+  right:80px;
+}
+
+#nameField{
+  top:140px;
+  right:180px;
+}
+
+#amountField{
+  top:180px;
+  right:180px;
+}
+
+#amountWordsField{
+  top:220px;
+  right:180px;
+  font-size:14px;
+  width:420px;
+}
+</style>
+</head>
+
+<body>
+
+<h2>مولد وطباعة شيكات CIB</h2>
+
+<div class="container">
+
+  <div class="form-box">
+    <label>تاريخ الشيك</label>
+    <input type="date" id="date" oninput="updateCheque()">
+
+    <label>اسم المستفيد</label>
+    <input type="text" id="name" placeholder="اكتب اسم المستفيد" oninput="updateCheque()">
+
+    <label>المبلغ رقماً</label>
+    <input type="number" id="amount" placeholder="مثال: 275969.74" oninput="updateCheque()">
+
+    <label>المبلغ كتابة</label>
+    <input type="text" id="amountWords" placeholder="اكتب المبلغ كتابة" oninput="updateCheque()">
+
+    <button onclick="window.print()">🖨️ طباعة الشيك</button>
+  </div>
+
+  <div class="cheque-box">
+    <img src="cheque-cib.png" alt="Cheque Template">
+
+    <div id="dateField" class="text-field"></div>
+    <div id="nameField" class="text-field"></div>
+    <div id="amountField" class="text-field"></div>
+    <div id="amountWordsField" class="text-field"></div>
+  </div>
+
+</div>
+
+<script>
+function updateCheque(){
+  document.getElementById("dateField").textContent =
+    document.getElementById("date").value;
+
+  document.getElementById("nameField").textContent =
+    document.getElementById("name").value;
+
+  document.getElementById("amountField").textContent =
+    document.getElementById("amount").value;
+
+  document.getElementById("amountWordsField").textContent =
+    document.getElementById("amountWords").value;
+}
+</script>
+
+</body>
+</html>
